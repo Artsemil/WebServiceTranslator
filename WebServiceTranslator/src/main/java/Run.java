@@ -11,8 +11,10 @@ public class Run {
         List<String> transcriptedList = new ArrayList<String>();
         for (String s : list) {
             translatedList.add(translator.getTranslating(s.trim()));
+            transcriptedList.add(translator.getTranscription(s.trim()));
 
         }
         editor.writeInFile("translate.txt", translatedList);
+        editor.writeInFile("transcription.txt", transcriptedList);
     }
 }

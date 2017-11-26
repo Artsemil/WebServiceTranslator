@@ -19,15 +19,18 @@ public class Translator {
         return tr[0];
     }
 
-    public void getTranscription(String world) throws IOException {
+    public String getTranscription(String world) throws IOException {
         String url = "https://dictionary.yandex.net/dicservice.json/lookupMultiple?ui=ru&srv=tr-text&sid=b09f2411.5a19dc9b.4ebe4de2&text=" + world + "&dict=en.syn%2Cen.ant%2Cen.deriv&flags=39";
         org.apache.http.client.HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
         HttpResponse response = client.execute(request);
         String responseString = new BasicResponseHandler().handleResponse(response);
         ObjectMapper mapper = new ObjectMapper();
-        DictionaryResponce dictionaryObject = mapper.readValue(responseString, DictionaryResponce.class);
-        String tr ="";
-        System.out.println(responseString);
+        Root root = mapper.readValue(responseString, Root.class);
+        try {
+            return "[" + root.getEn().getSyn().get(0).getTs() + "]";
+        }catch (Exception e){
+            return "No transcription";
+        }
     }
 }
